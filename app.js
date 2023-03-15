@@ -48,7 +48,7 @@ let wineGlass = new Product('wine-glass'); // 468 x 431
 
 //helper function to return random number between 1 and the length of the allProductsArray
 function getRandomIndex(){
-  return Math.ceil(Math.random()*state.allProductsArray.length); //changed from floor to ceil, unsure if floor rounds down to 0
+  return Math.floor(Math.random()*state.allProductsArray.length); //changed from floor to ceil, unsure if floor rounds down to 0
 }
 
 //render function
