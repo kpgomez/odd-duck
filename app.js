@@ -2,6 +2,7 @@
 
 //global variables
 let numberOfRounds = 25; //change to 25 at the end
+let currentIndices = [];
 
 const state = {
   allProductsArray: [],
@@ -48,40 +49,42 @@ let wineGlass = new Product('wine-glass'); // 468 x 431
 
 //helper function to return random number between 1 and the length of the allProductsArray
 function getRandomIndex(){
-  return Math.floor(Math.random()*state.allProductsArray.length); //changed from floor to ceil, unsure if floor rounds down to 0
+  return Math.floor(Math.random()*state.allProductsArray.length); //math.ceil produced duplicate indexes
+}
+
+//generates three indices and confirms there are no repeats
+function generateIndices(){  
+  for(let i = 0; i < 3; i++){
+    let nextIndex = getRandomIndex();
+    while (currentIndices.includes(nextIndex)){
+      nextIndex = getRandomIndex();
+    }
+    if (!currentIndices.includes(nextIndex)){
+      currentIndices.push(nextIndex);
+    }
+  }
 }
 
 //render function
 function renderImages(){
-  let indexOne = getRandomIndex(); //assigns random # to variable indexOne
-  let indexTwo = getRandomIndex();
-  let indexThree = getRandomIndex();
-
-  //checks to make sure the three numbers do not match
-  while(indexOne === indexTwo || indexOne === indexThree){
-    indexOne = getRandomIndex();
-  }
-  while(indexTwo === indexThree){
-    indexTwo = getRandomIndex();
-  }
-
+  
+  generateIndices();
   /*assigns the image URL as a src attribute for a variable 
   called imageOne // question is how does JavaScript know this 
   is a img element?*/
-  imageOne.src = state.allProductsArray[indexOne].photo; //why did JavaScript not require keyword "let" here??
-  imageOne.alt = state.allProductsArray[indexOne].name;
-  state.allProductsArray[indexOne].views++;
-  console.log(state.allProductsArray[indexOne].views);
-
-  imageTwo.src = state.allProductsArray[indexTwo].photo;
-  imageTwo.alt = state.allProductsArray[indexTwo].name;
-  state.allProductsArray[indexTwo].views++;
-  console.log(state.allProductsArray[indexTwo].views);
-
-  imageThree.src = state.allProductsArray[indexThree].photo;
-  imageThree.alt = state.allProductsArray[indexThree].name;
-  state.allProductsArray[indexThree].views++;
-  console.log(state.allProductsArray[indexThree].views)
+  imageOne.src = state.allProductsArray[currentIndices[0]].photo; //why did JavaScript not require keyword "let" here??
+  imageOne.alt = state.allProductsArray[currentIndices[0]].name;
+  state.allProductsArray[currentIndices[0]].views++;
+  
+  imageTwo.src = state.allProductsArray[currentIndices[1]].photo;
+  imageTwo.alt = state.allProductsArray[currentIndices[1]].name;
+  state.allProductsArray[currentIndices[1]].views++;
+  
+  imageThree.src = state.allProductsArray[currentIndices[2]].photo;
+  imageThree.alt = state.allProductsArray[currentIndices[2]].name;
+  state.allProductsArray[currentIndices[2]].views++;
+  
+  currentIndices = [];
 }
 
 //event handlers
