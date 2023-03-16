@@ -75,7 +75,7 @@ function renderImages(){
 
   imageTwo.src = state.allProductsArray[indexTwo].photo;
   imageTwo.alt = state.allProductsArray[indexTwo].name;
-  state.allProductsArray[indexOne].views++;
+  state.allProductsArray[indexTwo].views++;
   console.log(state.allProductsArray[indexTwo].views);
 
   imageThree.src = state.allProductsArray[indexThree].photo;
