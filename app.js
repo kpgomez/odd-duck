@@ -53,7 +53,7 @@ function getRandomIndex(){
 }
 
 //generates three indices and confirms there are no repeats
-function generateIndices(){  
+function generateIndices(){
   for(let i = 0; i < 3; i++){
     let nextIndex = getRandomIndex();
     while (currentIndices.includes(nextIndex)){
@@ -62,12 +62,14 @@ function generateIndices(){
     if (!currentIndices.includes(nextIndex)){
       currentIndices.push(nextIndex);
     }
+    while (currentIndices.length > 3){
+      currentIndices.shift();
+    }
   }
 }
 
 //render function
 function renderImages(){
-  
   generateIndices();
   /*assigns the image URL as a src attribute for a variable 
   called imageOne // question is how does JavaScript know this 
@@ -75,16 +77,15 @@ function renderImages(){
   imageOne.src = state.allProductsArray[currentIndices[0]].photo; //why did JavaScript not require keyword "let" here??
   imageOne.alt = state.allProductsArray[currentIndices[0]].name;
   state.allProductsArray[currentIndices[0]].views++;
-  
+
   imageTwo.src = state.allProductsArray[currentIndices[1]].photo;
   imageTwo.alt = state.allProductsArray[currentIndices[1]].name;
   state.allProductsArray[currentIndices[1]].views++;
-  
+
   imageThree.src = state.allProductsArray[currentIndices[2]].photo;
   imageThree.alt = state.allProductsArray[currentIndices[2]].name;
   state.allProductsArray[currentIndices[2]].views++;
-  
-  currentIndices = [];
+
 }
 
 //event handlers
