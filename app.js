@@ -16,6 +16,9 @@ let imageThree = document.getElementById('img-three');
 let resultsButton = document.getElementById('results-button');
 let results = document.getElementById('results-list');
 
+//dom reference for chart
+const ctx = document.getElementById('myChart');
+
 //constructors
 function Product(name, fileExtension = 'jpg'){
   this.name = name;
@@ -24,6 +27,86 @@ function Product(name, fileExtension = 'jpg'){
   this.votes = 0;
 
   state.allProductsArray.push(this);
+}
+
+//helper function to return random number between 1 and the length of the allProductsArray
+function getRandomIndex(){
+  return Math.floor(Math.random()*state.allProductsArray.length); //math.ceil produced duplicate indexes
+}
+
+//generates three indices and checks to make sure new index does not already exist
+function generateIndices(){
+  for(let i = 0; i < 3; i++){
+    let nextIndex = getRandomIndex();
+    while (currentIndices.includes(nextIndex)){
+      nextIndex = getRandomIndex();
+    }
+    if (!currentIndices.includes(nextIndex)){
+      currentIndices.push(nextIndex);
+    }
+  }
+  //removes the first three indices of currentIndices
+  while (currentIndices.length > 3){
+    currentIndices.shift();
+  }
+}
+
+//render images
+function renderImages(){
+  generateIndices();
+  /*assigns the image URL as a src attribute for a variable
+  called imageOne // question is how does JavaScript know this
+  is a img element?*/
+  imageOne.src = state.allProductsArray[currentIndices[0]].photo;
+  imageOne.alt = state.allProductsArray[currentIndices[0]].name;
+  state.allProductsArray[currentIndices[0]].views++;
+
+  imageTwo.src = state.allProductsArray[currentIndices[1]].photo;
+  imageTwo.alt = state.allProductsArray[currentIndices[1]].name;
+  state.allProductsArray[currentIndices[1]].views++;
+  
+  imageThree.src = state.allProductsArray[currentIndices[2]].photo;
+  imageThree.alt = state.allProductsArray[currentIndices[2]].name;
+  state.allProductsArray[currentIndices[2]].views++;
+  
+}
+
+//displays chart
+function renderChart(){
+
+  let productLabels = [];
+  let productViews = [];
+  let productVotes = [];
+
+  for(let i = 0; i < state.allProductsArray.length; i++){
+    productLabels.push(state.allProductsArray[i].name);
+    productViews.push(state.allProductsArray[i].views);
+    productVotes.push(state.allProductsArray[i].votes);
+  }
+
+  //new instance of Chart object
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: productLabels,
+      datasets: [{
+        label: '# of Votes',
+        data: productVotes,
+        borderWidth: 1
+      },
+      {label: '# of Views',
+        data: productViews,
+        borderWidth: 1}
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
 }
 
 //object instantiation
@@ -46,47 +129,6 @@ let tauntaun = new Product('tauntaun'); // 516 x 425
 let unicorn = new Product('unicorn'); // 600 x 700
 let waterCan = new Product('water-can'); // 625 x 625
 let wineGlass = new Product('wine-glass'); // 468 x 431
-
-//helper function to return random number between 1 and the length of the allProductsArray
-function getRandomIndex(){
-  return Math.floor(Math.random()*state.allProductsArray.length); //math.ceil produced duplicate indexes
-}
-
-//generates three indices and confirms there are no repeats
-function generateIndices(){
-  for(let i = 0; i < 3; i++){
-    let nextIndex = getRandomIndex();
-    while (currentIndices.includes(nextIndex)){
-      nextIndex = getRandomIndex();
-    }
-    if (!currentIndices.includes(nextIndex)){
-      currentIndices.push(nextIndex);
-    }
-    while (currentIndices.length > 3){
-      currentIndices.shift();
-    }
-  }
-}
-
-//render function
-function renderImages(){
-  generateIndices();
-  /*assigns the image URL as a src attribute for a variable 
-  called imageOne // question is how does JavaScript know this 
-  is a img element?*/
-  imageOne.src = state.allProductsArray[currentIndices[0]].photo; //why did JavaScript not require keyword "let" here??
-  imageOne.alt = state.allProductsArray[currentIndices[0]].name;
-  state.allProductsArray[currentIndices[0]].views++;
-
-  imageTwo.src = state.allProductsArray[currentIndices[1]].photo;
-  imageTwo.alt = state.allProductsArray[currentIndices[1]].name;
-  state.allProductsArray[currentIndices[1]].views++;
-
-  imageThree.src = state.allProductsArray[currentIndices[2]].photo;
-  imageThree.alt = state.allProductsArray[currentIndices[2]].name;
-  state.allProductsArray[currentIndices[2]].views++;
-
-}
 
 //event handlers
 function handleClick(event){
@@ -111,6 +153,7 @@ function handleShowResults(){
       resultsList.textContent = `${state.allProductsArray[i].name} had ${state.allProductsArray[i].votes} votes, and was seen ${state.allProductsArray[i].views} views.`;
       results.append(resultsList);
     }
+    renderChart();
   }
 } //why is semicolon not requird/reccommended here?
 
