@@ -16,6 +16,7 @@ let imageThree = document.getElementById('img-three');
 let resultsButton = document.getElementById('results-button');
 let results = document.getElementById('results-list');
 
+
 //dom reference for chart
 const ctx = document.getElementById('myChart');
 
@@ -110,25 +111,38 @@ function renderChart(){
 }
 
 //object instantiation
-let bag = new Product('bag'); // 630 x 611
-let banana = new Product('banana'); // 1200 x 1200
-let bathroom = new Product('bathroom'); // 500 x 500
-let boots = new Product('boots'); // 625 x 625
-let breakfast = new Product('breakfast'); // 450 x 360
-let bubblegum = new Product('bubblegum'); // 600 x 600
-let chair = new Product('chair'); // 1200 x 900
-let cthulhu = new Product('cthulhu'); // 650 x 650
-let dogDuck = new Product('dog-duck'); // 550 x 366
-let dragon = new Product('dragon'); // 464 x 700
-let pen = new Product('pen'); // 600 x 345
-let petSweep = new Product('pet-sweep'); // 600 x 512
-let scissors = new Product('scissors'); // 468 x 379
-let shark = new Product('shark'); // 640 x 404
-let sweep = new Product('sweep', 'png'); // 474 x 322 //corrected passing arguments
-let tauntaun = new Product('tauntaun'); // 516 x 425
-let unicorn = new Product('unicorn'); // 600 x 700
-let waterCan = new Product('water-can'); // 625 x 625
-let wineGlass = new Product('wine-glass'); // 468 x 431
+function createObjects(){
+  let bag = new Product('bag'); // 630 x 611
+  let banana = new Product('banana'); // 1200 x 1200
+  let bathroom = new Product('bathroom'); // 500 x 500
+  let boots = new Product('boots'); // 625 x 625
+  let breakfast = new Product('breakfast'); // 450 x 360
+  let bubblegum = new Product('bubblegum'); // 600 x 600
+  let chair = new Product('chair'); // 1200 x 900
+  let cthulhu = new Product('cthulhu'); // 650 x 650
+  let dogDuck = new Product('dog-duck'); // 550 x 366
+  let dragon = new Product('dragon'); // 464 x 700
+  let pen = new Product('pen'); // 600 x 345
+  let petSweep = new Product('pet-sweep'); // 600 x 512
+  let scissors = new Product('scissors'); // 468 x 379
+  let shark = new Product('shark'); // 640 x 404
+  let sweep = new Product('sweep', 'png'); // 474 x 322 //corrected passing arguments
+  let tauntaun = new Product('tauntaun'); // 516 x 425
+  let unicorn = new Product('unicorn'); // 600 x 700
+  let waterCan = new Product('water-can'); // 625 x 625
+  let wineGlass = new Product('wine-glass'); // 468 x 431
+}
+
+function retrieveLocal(){
+  let retrievedData = localStorage.getItem('productData');
+  let parsedData = JSON.parse(retrievedData);
+  
+  if(retrievedData){
+    state.allProductsArray = parsedData;
+  } else {
+    createObjects();
+  }
+}
 
 //event handlers
 function handleClick(event){
@@ -139,10 +153,13 @@ function handleClick(event){
       state.allProductsArray[i].votes++;
     }
   }
+  
   renderImages(); //renders a new set of images after each round of clicking/voting
-
+  
   if(!numberOfRounds){
     imageContainer.removeEventListener('click', handleClick);
+    let productData = JSON.stringify(state.allProductsArray);
+    localStorage.setItem('productData', productData);
   }
 }
 
@@ -155,10 +172,13 @@ function handleShowResults(){
     }
     renderChart();
   }
-} //why is semicolon not requird/reccommended here?
+}
 
 //event listeners
 imageContainer.addEventListener('click', handleClick);
 resultsButton.addEventListener('click', handleShowResults);
 
+
+createObjects();
+retrieveLocal();
 renderImages();
