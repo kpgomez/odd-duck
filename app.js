@@ -110,6 +110,7 @@ function renderChart(){
   });
 }
 
+
 //object instantiation
 function createObjects(){
   let bag = new Product('bag'); // 630 x 611
