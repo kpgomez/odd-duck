@@ -180,5 +180,5 @@ resultsButton.addEventListener('click', handleShowResults);
 
 
 createObjects();
-retrieveLocal();
 renderImages();
+retrieveLocal();
