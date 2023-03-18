@@ -46,6 +46,7 @@ function generateIndices(){
       currentIndices.push(nextIndex);
     }
   }
+  console.log(currentIndices);
   //removes the first three indices of currentIndices
   while (currentIndices.length > 3){
     currentIndices.shift();
@@ -54,7 +55,7 @@ function generateIndices(){
 
 //render images
 function renderImages(){ 
-  console.log(currentIndices);
+  // console.log(currentIndices);
   generateIndices();
   /*assigns the image URL as a src attribute for a variable
   called imageOne // question is how does JavaScript know this
