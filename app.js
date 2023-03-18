@@ -15,7 +15,7 @@ let imageTwo = document.getElementById('img-two');
 let imageThree = document.getElementById('img-three');
 let resultsButton = document.getElementById('results-button');
 let results = document.getElementById('results-list');
-// let resetButton = document.getElementById('reset');
+
 
 //dom reference for chart
 const ctx = document.getElementById('myChart');
@@ -174,14 +174,10 @@ function handleShowResults(){
   }
 }
 
-function handleReset(){
-  localStorage.clear();
-}
-
 //event listeners
 imageContainer.addEventListener('click', handleClick);
 resultsButton.addEventListener('click', handleShowResults);
-// resetButton.addEventListener('click', handleReset);
+
 
 createObjects();
 retrieveLocal();
