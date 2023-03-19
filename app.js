@@ -46,11 +46,11 @@ function generateIndices(){
       currentIndices.push(nextIndex);
     }
   }
-  console.log(currentIndices);
   //removes the first three indices of currentIndices
   while (currentIndices.length > 3){
     currentIndices.shift();
   }
+  console.log(currentIndices);
 }
 
 //render images
@@ -182,6 +182,6 @@ imageContainer.addEventListener('click', handleClick);
 resultsButton.addEventListener('click', handleShowResults);
 
 
-createObjects();
-renderImages();
+// createObjects();
 retrieveLocal();
+renderImages();
